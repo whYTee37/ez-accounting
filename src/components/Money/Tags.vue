@@ -1,12 +1,12 @@
 <template>
   <div class="tags">
     <div class="new">
-      <button>新增标签</button>
+      <button @click="create()">新增标签</button>
     </div>
     <ul class="current">
-      <li v-for="tag in dataSource" :key="tag"
+      <li v-for="tag in value" :key="tag"
           :class="{selected:selectedTags.indexOf(tag)>=0}"
-          @click="select(tag)">
+          @click="toggle(tag)">
 
         {{tag}}
 
@@ -22,13 +22,21 @@ import {Component,Prop} from "vue-property-decorator";
 
 @Component
 export default class Tags extends Vue{
-  @Prop() readonly dataSource:string[]|undefined;
+  @Prop(Array) readonly value:string[]|undefined;
   selectedTags:string[] = [];
 
-  select(tag:string){
+  toggle(tag:string){
     const index = this.selectedTags.indexOf(tag);
     if(index>=0) this.selectedTags.splice(index,1)
     else this.selectedTags.push(tag);
+  }
+
+  create(){
+    const name = window.prompt("请输入新增标签：");
+    if(!name) window.alert("标签名不能为空")
+    else if(this.value){
+      this.$emit('update:value',[...this.value,name]);
+    }
   }
 
 };
