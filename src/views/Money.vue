@@ -4,10 +4,11 @@
     <Types :value.sync="record.type"/>
     <div class="notes">
     <FormItem :value.sync="record.notes"
-    file-name="备注"
-    placeholder="在这里输入备注"/>
+                file-name="备注"
+                placeholder="在这里输入备注"
+                />
     </div>
-    <Tags :value.sync="record.tags"/>
+    <Tags :value.sync="tags" @update:value1="onUpdateTags" />
     {{recordList}}
   </Layout>
 
@@ -34,10 +35,18 @@ export default class Money extends Vue{
   tags = tagList;
   recordList:RecordItem[] = recordList;
   record:RecordItem = {
-    tags:['衣','食','住','行'],
+    tags:[],
     notes:'',
     type:'-',
     amount:0
+  }
+
+  onUpdateTags(value:string[]){
+    //this.record.tags=value;
+  }
+
+  onUpdateNotes(value:string){
+    this.record.notes = value;
   }
 
   saveRecord(){//当且仅当点击“OK”按钮时才触发
