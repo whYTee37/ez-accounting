@@ -1,6 +1,6 @@
 <template>
   <Layout class-prefix="layout">
-    <NumberPad :value.sync="record.amount" @submit="saveRecord()"/>
+    <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
     <Types :value.sync="record.type"/>
     <div class="notes">
     <FormItem :value.sync="record.notes"
@@ -8,7 +8,7 @@
                 placeholder="在这里输入备注"
                 />
     </div>
-    <Tags :value.sync="tags" @update:value1="onUpdateTags" />
+    <Tags/>
     {{recordList}}
   </Layout>
 
@@ -21,19 +21,21 @@ import NumberPad from '@/components/Money/NumberPad.vue';
 import Types from '@/components/Money/Types.vue';
 import FormItem from '@/components/Money/FormItem.vue';
 import Tags from '@/components/Money/Tags.vue';
-import recordListModel from '@/models/recordListModel.ts';
-import tagListModel from '@/models/tagListModel.ts';
+//import recordListModel from '@/models/recordListModel.ts';
+//import tagListModel from '@/models/tagListModel.ts';
 
 //const recordList:Record[] = JSON.parse(window.localStorage.getItem('recordList') || '[]')
-const recordList = recordListModel.fetch();
-const tagList = tagListModel.fetch();
+//const recordList = recordListModel.fetch();
+//const tagList = tagListModel.fetch();
 
 
 
 @Component({components:{Tags, FormItem, Types, NumberPad}})
 export default class Money extends Vue{
-  tags = tagList;
-  recordList:RecordItem[] = recordList;
+  get recordList() {
+    return this.$store.state.recordList;
+  }
+
   record:RecordItem = {
     tags:[],
     notes:'',
@@ -41,19 +43,12 @@ export default class Money extends Vue{
     amount:0
   }
 
-  onUpdateTags(value:string[]){
-    //this.record.tags=value;
-  }
-
-  onUpdateNotes(value:string){
-    this.record.notes = value;
+  created() {
+    this.$store.commit('fetchRecords');
   }
 
   saveRecord(){//当且仅当点击“OK”按钮时才触发
-    const record2:RecordItem = JSON.parse(JSON.stringify(this.record));//用JSON深拷贝一下，弄个副本出来
-    record2.createdAt = new Date();
-    this.recordList.push(record2);//全篇仅此处可以修改recordList的值
-    console.log(this.recordList);
+    this.$store.commit('createRecord', this.record);
   }
 
 

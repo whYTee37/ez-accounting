@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{value}} <!--   用于测试<input/> 输入是否已经双向绑定-->
     <label class="formItem">
       <span class="name">{{this.fileName}}</span>
       <input type="text" v-model="value" :placeholder="this.placeholder">

@@ -1,15 +1,14 @@
 <template>
   <Layout>
     <div class="navBar">
-<!--      <Icon class="leftIcon" name="left" @click="goBack"/>-->
       <svg class="icon leftIcon" aria-hidden="true" @click="goBack">
         <use xlink:href="#icon-left-square"></use>
       </svg>
       <span class="title">编辑标签</span>
-      <span class="rightIcon"></span>
+      <span class="rightIcon"/>
     </div>
     <div class="form-wrapper">
-      <FormItem :value="tag.name"
+      <FormItem :value="currentTag.name"
                 @update:value="update"
                 file-name="标签名" placeholder="请输入标签名"/>
     </div>
@@ -22,46 +21,38 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-import tagListModel from '@/models/tagListModel';
 import FormItem from '@/components/Money/FormItem.vue';
 import Button from '@/components/Button.vue';
 @Component({
-  components: {Button, FormItem}
+  components: {Button, FormItem},
 })
 export default class EditLabel extends Vue {
-  tag?: { id: string, name: string } = undefined;
+  get currentTag() {
+    return this.$store.state.currentTag;
+  }
   created() {
     const id = this.$route.params.id;
-    tagListModel.fetch();
-    const tags = tagListModel.data;
-    const tag = tags.filter(t => t.id === id)[0];
-    if (tag) {
-      this.tag = tag;
-    } else {
+    this.$store.commit('fetchTags');
+    this.$store.commit('setCurrentTag', id);
+    if (!this.currentTag) {
       this.$router.replace('/404');
     }
   }
-
   update(name: string) {
-    if (this.tag) {
-      tagListModel.update(this.tag.id, name);
+    if (this.currentTag) {
+      this.$store.commit('updateTag', {
+        id: this.currentTag.id, name
+      });
     }
   }
-
+  remove() {
+    if (this.currentTag) {
+      this.$store.commit('removeTag', this.currentTag.id);
+    }
+  }
   goBack() {
     this.$router.back();
   }
-
-  remove() {
-    if (this.tag) {
-      if (tagListModel.remove(this.tag.id)) {
-        this.goBack();
-      } else {
-        window.alert('删除失败');
-      }
-    }
-  }
-
 }
 </script>
 
@@ -95,3 +86,6 @@ export default class EditLabel extends Vue {
   margin-top: 44-16px;
 }
 </style>
+
+
+

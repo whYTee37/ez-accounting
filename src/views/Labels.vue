@@ -21,23 +21,24 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+//import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-import tagListModel from '@/models/tagListModel';
+//import tagListModel from '@/models/tagListModel';//采用VUEX后弃用Model模块
 import Button from '@/components/Button.vue';
-tagListModel.fetch();
+import { mixins } from 'vue-class-component';
+import TagHelper from "@/mixins/TagHelper";
+//tagListModel.fetch();
 @Component({
   components: {Button}
 })
-export default class Labels extends Vue{
-  tags = tagListModel.data;
-  createTag(){
-    const name = window.prompt("请输入标签名");
-    if(name){
-      const message = tagListModel.create(name);
-      if(message==='success') window.alert('成功添加标签');
-      else if(message==='duplicated') window.alert('新添加标签名已存在');
-    }
+export default class Labels extends mixins(TagHelper){
+  //tags = tagListModel.data;
+  created() {
+    this.$store.commit('fetchTags');
+  }
+
+  get tags(){
+    return this.$store.state.tagList;
   }
 };
 </script>
