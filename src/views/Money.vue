@@ -8,7 +8,7 @@
                 placeholder="在这里输入备注"
                 />
     </div>
-    <Tags/>
+    <Tags @update:value="record.tags = $event"/>
     {{recordList}}
   </Layout>
 
@@ -16,11 +16,12 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {Component,Watch} from "vue-property-decorator";
+import {Component} from "vue-property-decorator";
 import NumberPad from '@/components/Money/NumberPad.vue';
 import Types from '@/components/Money/Types.vue';
 import FormItem from '@/components/Money/FormItem.vue';
 import Tags from '@/components/Money/Tags.vue';
+
 //import recordListModel from '@/models/recordListModel.ts';
 //import tagListModel from '@/models/tagListModel.ts';
 
@@ -32,6 +33,7 @@ import Tags from '@/components/Money/Tags.vue';
 
 @Component({components:{Tags, FormItem, Types, NumberPad}})
 export default class Money extends Vue{
+
   get recordList() {
     return this.$store.state.recordList;
   }
@@ -47,16 +49,17 @@ export default class Money extends Vue{
     this.$store.commit('fetchRecords');
   }
 
-  saveRecord(){//当且仅当点击“OK”按钮时才触发
+  saveRecord() {
+    if (!this.record.tags || this.record.tags.length === 0) {
+      return window.alert('请至少选择一个标签');
+    }
     this.$store.commit('createRecord', this.record);
+    if (this.$store.state.createRecordError === null) {
+      window.alert('已保存');
+      this.record.notes = '';
+    }
   }
 
-
-
-  @Watch('recordList')
-  onRecordChange(){
-    window.localStorage.setItem('recordList',JSON.stringify(this.recordList));
-  }
 };
 </script>
 
