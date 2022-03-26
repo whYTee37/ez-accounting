@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout class="all">
     <div class="tags">
       <router-link class="tag"
                    v-for="tag in tags" :key="tag.id"
@@ -45,10 +45,12 @@ export default class Labels extends mixins(TagHelper){
 
 <style lang="scss" scoped>
 .tags {
-  background: white;
+  background: rgb(255,144,0);
   font-size: 16px;
   padding-left: 16px;
   > .tag {
+    color: #f3f2f2;
+    font-weight: 600;
     min-height: 44px;
     display: flex;
     align-items: center;
@@ -75,4 +77,6 @@ export default class Labels extends mixins(TagHelper){
     margin-top: 44-16px;
   }
 }
+
+
 </style>

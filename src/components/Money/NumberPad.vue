@@ -13,7 +13,7 @@
       <button @click="inputContent">7</button>
       <button @click="inputContent">8</button>
       <button @click="inputContent">9</button>
-      <button @click="ok" class="ok">OK</button>
+      <button @click="ok" class="ok">完成</button>
       <button @click="inputContent" class="zero">0</button>
       <button @click="inputContent">.</button>
     </div>
@@ -76,12 +76,16 @@ export default class NumberPad extends Vue {
     font-family: Consolas, monospace;
     padding: 9px 16px;
     text-align: right;
+    background: #989898;
+    color: #1c1b1b;
   }
   .buttons {
     @extend %clearFix;
     > button {
       width: 25%;
       height: 64px;
+      color: #c2c2c2;
+      font-weight: bold;
       float: left;
       background: transparent;
       border: none;
@@ -92,7 +96,7 @@ export default class NumberPad extends Vue {
       &.zero {
         width: 25*2%;
       }
-      $bg: #f2f2f2;
+      $bg: rgb(115,115,125);
       &:nth-child(1) {
         background: $bg;
       }
@@ -110,6 +114,7 @@ export default class NumberPad extends Vue {
       }
       &:nth-child(14) {
         background: darken($bg, 4*5%);
+
       }
       &:nth-child(12) {
         background: darken($bg, 4*6%);

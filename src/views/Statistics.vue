@@ -4,15 +4,27 @@
     <ol v-if="groupedList.length>0">
       <li v-for="(group, index) in groupedList" :key="index">
         <h3 class="title">{{beautify(group.title)}} <span>￥{{group.total}}</span></h3>
-        <ol>
-          <li v-for="item in group.items" :key="item.id"
-              class="record"
-          >
+<!--        <ol>-->
+<!--          <li v-for="item in group.items" :key="item.id"-->
+<!--              class="record"-->
+<!--          >-->
+<!--            <span>{{tagString(item.tags)}}</span>-->
+<!--            <span class="notes">{{item.notes}}</span>-->
+<!--            <span>￥{{item.amount}} </span>-->
+<!--          </li>-->
+          <router-link class="record"
+                       v-for="item in group.items" :key="item.id"
+                       :to="`/statistics/edit/${item.id}`">
             <span>{{tagString(item.tags)}}</span>
-            <span class="notes">{{item.notes}}</span>
-            <span>￥{{item.amount}} </span>
-          </li>
-        </ol>
+                        <span class="notes">{{item.notes}}</span>
+                        <span>￥{{item.amount}} </span>
+            <div class="iconWrapper">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-arrow-right"></use>
+            </svg>
+            </div>
+            </router-link>
+<!--        </ol>-->
       </li>
     </ol>
     <div v-else class="noResult">
@@ -73,8 +85,8 @@ export default class Statistics extends Vue {
     }
     result.map(group => {
       group.total = group.items.reduce((sum, item) => {
-        console.log(sum);
-        console.log(item);
+        // console.log(sum);
+        // console.log(item);
         return sum + item.amount;
       }, 0);
     });
@@ -92,15 +104,18 @@ export default class Statistics extends Vue {
 .noResult {
   padding: 16px;
   text-align: center;
+  color: white;
+  //font-weight: 600;
+  font-size: 16px;
 }
 ::v-deep {
   .type-tabs-item {
-    background: #C4C4C4;
+    background: #FF9000;
     &.selected {
-      background: white;
-      &::after {
-        display: none;
-      }
+      //background: white;
+      ////&::after {
+      ////  display: none;
+      ////}
     }
   }
   .interval-tabs-item {
@@ -116,6 +131,8 @@ export default class Statistics extends Vue {
 }
 .title {
   @extend %item;
+  color: #FF9000;
+
 }
 .record {
   background: white;
@@ -125,5 +142,10 @@ export default class Statistics extends Vue {
   margin-right: auto;
   margin-left: 16px;
   color: #999;
+}
+
+.iconWrapper{
+  display: flex;
+  align-items: center;
 }
 </style>

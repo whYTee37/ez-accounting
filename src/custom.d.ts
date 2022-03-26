@@ -1,4 +1,5 @@
 type RecordItem = {
+    id: string
     tags: string[]
     notes: string
     type: string
@@ -14,5 +15,8 @@ type Tag = {
 type RootState = {
     recordList: RecordItem[],
     tagList: Tag[],
-    currentTag?: Tag
+    currentTag?: Tag,
+    currentRecord?:RecordItem,
+    createRecordError: Error | null,
+    createTagError: Error | null,
 }

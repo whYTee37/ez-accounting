@@ -60,8 +60,9 @@ export default class Tags extends mixins(tagHelper){
       margin-right: 12px;
       margin-top: 4px;
       &.selected{
-        background: darken($bg,50%);
+        background: rgb(255,144,0);
         color: white;
+
       }
     }
 
@@ -71,7 +72,7 @@ export default class Tags extends mixins(tagHelper){
     button {
       background: transparent;
       border: none;
-      color: #999;
+      color: white;
       border-bottom: 1px solid;
       padding: 0 4px;
     }

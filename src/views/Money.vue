@@ -1,15 +1,16 @@
 <template>
   <Layout class-prefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
-    <Types :value.sync="record.type"/>
+
     <div class="notes">
     <FormItem :value.sync="record.notes"
                 file-name="备注"
-                placeholder="在这里输入备注"
+                placeholder="输入该笔账单详情"
                 />
     </div>
     <Tags @update:value="record.tags = $event"/>
-    {{recordList}}
+<!--    {{recordList}}-->
+    <Types :value.sync="record.type"/>
   </Layout>
 
 </template>
@@ -39,6 +40,7 @@ export default class Money extends Vue{
   }
 
   record:RecordItem = {
+    id:'',
     tags:[],
     notes:'',
     type:'-',
@@ -50,6 +52,7 @@ export default class Money extends Vue{
   }
 
   saveRecord() {
+
     if (!this.record.tags || this.record.tags.length === 0) {
       return window.alert('请至少选择一个标签');
     }

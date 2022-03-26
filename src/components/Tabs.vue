@@ -45,6 +45,7 @@ export default class Tabs extends Vue {
     justify-content: center;
     align-items: center;
     position: relative;
+
     &.selected::after {
       content: '';
       position: absolute;
@@ -52,7 +53,7 @@ export default class Tabs extends Vue {
       left: 0;
       width: 100%;
       height: 4px;
-      background: #333;
+      background: white;
     }
   }
 }
