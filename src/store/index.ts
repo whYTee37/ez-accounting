@@ -105,7 +105,7 @@ const store =  new Vuex.Store({
       const id = createId().toString();
       state.tagList.push({id,name});
       store.commit('saveTags');
-      return ;
+      return;
     },
 
     createRecord(state, record) {
